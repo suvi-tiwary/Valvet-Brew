@@ -1,17 +1,17 @@
-[
+const menu = [
   {
     "id": 1,
     "name": "Cake",
     "halfPrice": 80,
     "fullPrice": 150,
-    "image": "/images/cake.jpg"
+    "image": "/cake.jpg"
   },
   {
     "id": 2,
     "name": "Chilli Potato",
     "halfPrice": 90,
     "fullPrice": 170,
-    "image": "/images/chilli-potato.jpg"
+    "image": "/chilli-potato.webp"
   },
   {
     "id": 3,
@@ -35,3 +35,5 @@
     "image": "/images/momos.jpg"
   }
 ]
+
+export default menu
