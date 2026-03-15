@@ -71,10 +71,25 @@ const Home = () => {
       </div>
 
       {/* ── DRINKS SECTION ── */}
-    <video autoPlay loop muted className="relative w-full h-[100%] object-cover">
-    <source src="/output.mp4" type="video/mp4"/>
-    <img src="/cocktail-left-leaf.png" alt=""  className='absolute top-5'/>
+    {/* ── DRINKS SECTION ── */}
+<div className="relative w-full h-screen">
+
+  <video
+    autoPlay
+    loop
+    muted
+    className="w-full h-full object-cover"
+  >
+    <source src="/output.mp4" type="video/mp4" />
   </video>
+
+  <img
+    src="/cocktail-left.png"
+    alt="cocktail"
+    className="absolute top-7 left-5 w-[300px] h-[400px]"
+  />
+
+</div>
     </div>
   )
 }
