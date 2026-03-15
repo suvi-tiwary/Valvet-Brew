@@ -15,24 +15,24 @@ const menu = [
   },
   {
     "id": 3,
-    "name": "Pizza",
+    "name": "Momos",
     "halfPrice": 120,
     "fullPrice": 250,
-    "image": "/images/pizza.jpg"
+    "image": "/momos.webp"
   },
   {
     "id": 4,
-    "name": "Paratha",
+    "name": "Spring Roll",
     "halfPrice": 40,
     "fullPrice": 70,
-    "image": "/images/paratha.jpg"
+    "image": "/spring-roll.webp"
   },
   {
     "id": 5,
-    "name": "Momos",
+    "name": "Paratha",
     "halfPrice": 60,
     "fullPrice": 120,
-    "image": "/images/momos.jpg"
+    "image": "/paratha.webp"
   }
 ]
 
