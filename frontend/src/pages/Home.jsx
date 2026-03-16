@@ -5,10 +5,10 @@ import menu from '../menu'
 
 const Home = () => {
   return (
-    <div className='w-full min-h-screen mt-[65px] bg-gray-50'>
+    <div className='w-full min-h-screen pt-[65px] bg-gray-50'>
 
       {/* ── HERO IMAGE ── */}
-      <div className='relative w-full h-[70vh] overflow-hidden'>
+      <div className='relative w-[100vw] h-[70vh] overflow-hidden'>
         <img src={backgroundImg} alt="" className='w-full h-full object-cover' />
         <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent' />
       </div>
@@ -69,27 +69,6 @@ const Home = () => {
           </div>
         ))}
       </div>
-
-      {/* ── DRINKS SECTION ── */}
-    {/* ── DRINKS SECTION ── */}
-<div className="relative w-full h-screen">
-
-  <video
-    autoPlay
-    loop
-    muted
-    className="w-full h-full object-cover"
-  >
-    <source src="/output.mp4" type="video/mp4" />
-  </video>
-
-  <img
-    src="/cocktail-left.png"
-    alt="cocktail"
-    className="absolute top-7 left-5 w-[300px] h-[400px]"
-  />
-
-</div>
     </div>
   )
 }
