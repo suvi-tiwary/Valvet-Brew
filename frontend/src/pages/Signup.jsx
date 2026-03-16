@@ -12,20 +12,20 @@ const Signup = () => {
           {/* Fullname */}
           <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="Fullname">Fullname</label>
-            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-orange-400 focus:outline-none rounded-xl'/>
+            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
           </div>
 
           {/* email */}
           <div className='flex flex-col mt-3 px-2'>
-            <label htmlFor="email">email</label>
-            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-orange-400 focus:outline-none rounded-xl'/>
+            <label htmlFor="email">Email</label>
+            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
           </div>
 
           {/* password */}
 
             <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="password">Password</label>
-            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-orange-400 focus:outline-none rounded-xl'/>
+            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
           </div>
 
 
