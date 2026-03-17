@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { FcGoogle } from "react-icons/fc";
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Signup = () => {
     let [role,setRole]=useState("")
+    let [showPassword,setShowPassword]=useState(false)
   return (
          <div  className='w-full min-h-screen flex justify-center items-center bg-[#fff9f6] p-3'>
          <div className='w-full max-w-md bg-white rounded-xl shadow-xl p-6'>
-          <h1 className='font-bold text-[23px] text-[#FF4500]'>Velvet</h1>
+          <h1 className='font-bold text-[27px] text-[#FF4500]'>Velvet</h1>
           <p className='text-gray-500 pb-2'>  ***Signup to get owesome and delicious food delivery**</p>
 
           {/* Fullname */}
@@ -22,11 +25,15 @@ const Signup = () => {
           </div>
 
           {/* password */}
+            <div className='relative'>
 
+            {showPassword?<FaRegEye  className='absolute right-5 top-8' onClick={()=>setShowPassword(prev=>!prev)}/>:<FaRegEyeSlash className='absolute right-5 top-8' onClick={()=>setShowPassword(prev=>!prev)} />}  
             <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="password">Password</label>
-            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
-          </div>
+            <input type= {showPassword?"text":"password"} className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
+            </div>
+            </div>
+        
 
 
           {/* role */}
