@@ -27,7 +27,7 @@ const Signup = () => {
           {/* password */}
             <div className='relative'>
 
-            {showPassword?<FaRegEye  className='absolute right-5 top-8' onClick={()=>setShowPassword(prev=>!prev)}/>:<FaRegEyeSlash className='absolute right-5 top-8' onClick={()=>setShowPassword(prev=>!prev)} />}  
+            {showPassword?<FaRegEye  className='absolute right-5 top-8 cursor-pointer' onClick={()=>setShowPassword(prev=>!prev)}/>:<FaRegEyeSlash className='absolute right-5 top-8 cursor-pointer' onClick={()=>setShowPassword(prev=>!prev)} />}  
             <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="password">Password</label>
             <input type= {showPassword?"text":"password"} className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
