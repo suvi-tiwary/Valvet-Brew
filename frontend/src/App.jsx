@@ -5,12 +5,14 @@ import ForgetPassword from './pages/ForgetPassword'
 
 
 
+
 const App = () => {
   return (
     <>
     <Routes>
       <Route path='/signup' element={<Signup/>}/>
       <Route path='/forget' element={<ForgetPassword/>}/>
+     
     </Routes>
     </>
   )
