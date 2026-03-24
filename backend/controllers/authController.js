@@ -75,3 +75,11 @@ export const SignOut= async(req,res)=>{
     }
 }
 
+export const sendOtp= async(req,res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
