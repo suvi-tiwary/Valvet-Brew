@@ -2,10 +2,30 @@ import React, { useState } from 'react'
 import { FcGoogle } from "react-icons/fc";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios"
+import userHooks from '../hooks/userHooks';
 
 const Signup = () => {
-    let [role,setRole]=useState("")
+    let [role,setRole]=useState("User")
     let [showPassword,setShowPassword]=useState(false)
+    const navigate = useNavigate()
+    let [fullname,setFullname]=useState("")
+    let [email,setEmail]=useState("")
+    let [password,setPassword]=useState("")
+    const serverUrl = "http://localhost:3000"
+    const {userData,setUserData}= userHooks()
+    const SignupHandler = async()=>{
+      try {
+        let result = await axios.post(`${serverUrl}/api/signup`,{
+          fullname,email,password,role})
+           console.log(result.data)
+
+           navigate("/")
+      } catch (error) {
+          console.log("ERROR DATA:", error.response?.data)
+      }
+    }
   return (
          <div  className='w-full min-h-screen flex justify-center items-center bg-[#fff9f6] p-3'>
          <div className='w-full max-w-md bg-white rounded-xl shadow-xl p-6'>
@@ -15,13 +35,13 @@ const Signup = () => {
           {/* Fullname */}
           <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="Fullname">Fullname</label>
-            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
+            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl' onChange={(e)=>setFullname(e.target.value)} value={fullname}/>
           </div>
 
           {/* email */}
           <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="email">Email</label>
-            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
+            <input type="text" className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl' onChange={(e)=>setEmail(e.target.value)} value={email}/>
           </div>
 
           {/* password */}
@@ -30,7 +50,7 @@ const Signup = () => {
             {showPassword?<FaRegEye  className='absolute right-5 top-8 cursor-pointer' onClick={()=>setShowPassword(prev=>!prev)}/>:<FaRegEyeSlash className='absolute right-5 top-8 cursor-pointer' onClick={()=>setShowPassword(prev=>!prev)} />}  
             <div className='flex flex-col mt-3 px-2'>
             <label htmlFor="password">Password</label>
-            <input type= {showPassword?"text":"password"} className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'/>
+            <input type= {showPassword?"text":"password"} className='border-[2px] border-gray-300 p-1 hover:border-[#FF4500] focus:outline-none rounded-xl'onChange={(e)=>setPassword(e.target.value)} value={password}/>
             </div>
             </div>
         
@@ -43,6 +63,7 @@ const Signup = () => {
           <button
             key={r}
             onClick={() => setRole(r)}
+            value={role}
             className={`w-[109px] h-[45px] rounded-xl transition
               ${
                 role === r
@@ -58,7 +79,7 @@ const Signup = () => {
      
         {/* signup button */}
 
-        <button className='w-[90%] mx-auto block mt-3 bg-[#FF4500] hover:bg-[#E03E00] border-[1px] border-[#CC3700] rounded-xl p-2 text-white'>Signup</button>
+        <button className='w-[90%] mx-auto block mt-3 bg-[#FF4500] hover:bg-[#E03E00] border-[1px] border-[#CC3700] rounded-xl p-2 text-white' onClick={SignupHandler}>Signup</button>
 
     
         {/* google authentication */}
@@ -69,7 +90,7 @@ const Signup = () => {
         Continue with Google
          </button>
 
-       <p className='text-center mt-2'>Already have an account ? <span className='text-[#FF4500] cursor-pointer'>SignIn</span></p>
+       <p className='text-center mt-2'>Already have an account ? <span className='text-[#FF4500] cursor-pointer' onClick={()=>navigate("/signin")}>SignIn</span></p>
 
         </div>
     </div>
