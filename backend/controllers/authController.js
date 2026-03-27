@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs"
 import User from "../model/userModel.js"
 import gentoken from "../config/token.js"
+import { sendMail } from "../mail.js"
 
 export const Signup = async(req,res)=>{
     try {
@@ -77,9 +78,58 @@ export const SignOut= async(req,res)=>{
 
 export const sendOtp= async(req,res)=>{
     try {
+        let {email}=req.body
+        const user = await findOne({email})
+        if(!user){
+            return res.status(400).send("user does not exist")
+        }
+        const otp = await Math.floor(100000+ Math.random()*900000).toString()
+        user.otp=otp
+        user.otpExpires=Date.now+5*60*1000
+        
+        await user.save()
+        await sendMail(email,otp)
+        return res.satus(200).send("otp send successfully")
+    } catch (error) {
+        return res.satus(500).send(`send otp error ${error}`)
+    }
+}
+
+export const verifyOtp = async(req,res)=>{
+    try {
+          let {email,otp}=req.body
+        const user = await findOne({email})
+        if(user.otp!=otp || user.otpExpires<otp){
+            return res.status(400).send("Incorrect OTP")
+        }
+        user.verifyOtp=true
+        await user.save()
+        return res.satus(200).send("otp is verified")
         
     } catch (error) {
-        
+        return res.status(500).send(`verify otp error ${error}`)
+    }
+}
+
+export const resetPassword = async(req,res)=>{
+    try {
+        let {email,newPassword}=req.body
+        const user = await User.findOne({email})
+        if(!user || !user.otpVerified){
+            return res.satus(400).send("otp verification required")
+        }
+
+        const hassedPassword = await bcrypt.hash(newPassword,10)
+        user.password=hassedPassword
+        user.otpVerified=false
+        user.otpExpires=null
+        user.otp=null
+        await user.save()
+
+        return res.status(200).send("Password reset done")
+
+    } catch (error) {
+        return res.status(500).send(`reset password error ${error}`)
     }
 }
 
