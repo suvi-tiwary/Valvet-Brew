@@ -1,20 +1,28 @@
 import jwt from "jsonwebtoken"
 
+export const isAuth = (req, res, next) => {
+  try {
+    console.log("cookies:", req.cookies)
+    console.log("token:", req.cookies?.token)
+    console.log("type:", typeof req.cookies?.token)
 
-export const isAuth = async(req,res,next)=>{
-    try {
-        const token = await req.cookies.token
-        if(!token){
-            return res.status(400).send("token not found")
-        }
-        console.log(token)
-        const decode=  jwt.verify(token,process.env.JWT_SCREATE)
-        console.log(decode)
-        req.userId = decode.userId
+    const token = req.cookies?.token
 
-        next()
-        
-    } catch (error) {
-        return res.status(500).send(`is auth error ${error}`)
+    if (!token) {
+      return res.status(401).send("Token not found")
     }
+    console.log("RAW COOKIE:", req.cookies)
+    console.log("TOKEN VALUE:", req.cookies.token)
+    console.log("TYPE:", typeof req.cookies.token)
+
+    const decoded = jwt.verify(token, process.env.JWT_SCREATE)
+    console.log(decoded)
+
+    req.userId = decoded.userId
+    next()
+
+  } catch (error) {
+    console.log("JWT ERROR:", error.message)
+    return res.status(401).send(error.message)
+  }
 }
