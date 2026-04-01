@@ -5,8 +5,11 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import userHooks from '../hooks/userHooks';
+import { useDispatch } from 'react-redux';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../firebase';
 
-const Signup = () => {
+const Signup = () => { 
     let [role,setRole]=useState("User")
     let [showPassword,setShowPassword]=useState(false)
     const navigate = useNavigate()
@@ -14,17 +17,33 @@ const Signup = () => {
     let [email,setEmail]=useState("")
     let [password,setPassword]=useState("")
     const serverUrl = "http://localhost:3000"
-    const {userData,setUserData}= userHooks()
+    let dispatch = useDispatch()
     const SignupHandler = async()=>{
       try {
         let result = await axios.post(`${serverUrl}/api/signup`,{
           fullname,email,password,role})
            console.log(result.data)
-
+           dispatch(setUserData(result.data))
            navigate("/")
       } catch (error) {
           console.log("ERROR DATA:", error.response?.data)
       }
+    }
+
+    const handleGoogleAuth= async()=>{
+      const provider = new GoogleAuthProvider()
+      const result = await signInWithPopup(auth,provider)
+      console.log(result)
+      try {
+        const {data}= await axios.post(`${serverUrl}/api/google-auth`,{
+          fullname:result.user.displayName,
+          email:result.user.email,
+          role
+        },{withCredentials:true})
+      } catch (error) {
+        console.log(error)
+      }
+  
     }
   return (
          <div  className='w-full min-h-screen flex justify-center items-center bg-[#fff9f6] p-3'>
@@ -79,12 +98,12 @@ const Signup = () => {
      
         {/* signup button */}
 
-        <button className='w-[90%] mx-auto block mt-3 bg-[#FF4500] hover:bg-[#E03E00] border-[1px] border-[#CC3700] rounded-xl p-2 text-white' onClick={SignupHandler}>Signup</button>
+        <button className='md:w-[90%] w-full mx-auto block mt-3 bg-[#FF4500] hover:bg-[#E03E00] border-[1px] border-[#CC3700] rounded-xl p-2 text-white' onClick={SignupHandler}>Signup</button>
 
     
         {/* google authentication */}
 
-        <button className="w-[90%] mx-auto block mt-3 bg-[#F3F4F6] hover:bg-[#E5E7EB] border border-[#D1D5DB] rounded-xl p-2 text-[#374151] flex items-center justify-center gap-2 transition">
+        <button className="md:w-[90%] w-full mx-auto block mt-3 bg-[#F3F4F6] hover:bg-[#E5E7EB] border border-[#D1D5DB] rounded-xl p-2 text-[#374151] flex items-center justify-center gap-2 transition" onClick={handleGoogleAuth}>
   
         <FcGoogle size={20} />
         Continue with Google

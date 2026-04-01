@@ -1,23 +1,30 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../redux/userSlice'
 
 const userHooks = () => {
 
- const serverUrl = "http://localhost:3000"
- const [userData,setUserData]=useState(null)
-    useEffect(()=>{
-        const fetchCurrentUser = async()=>{
-            try {
-                let result = await axios.get(`${serverUrl}/api/current,{withCredential:true}`)
-                
-            } catch (error) {
-                
-            }
-        }
-    },[])
-  return (
-    <div>userHooks</div>
-  )
+  const dispatch = useDispatch()
+  const serverUrl = "http://localhost:3000"
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const result = await axios.get(`${serverUrl}/api/current`, {
+          withCredentials: true
+        })
+
+        dispatch(setUserData(result.data))
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchCurrentUser()
+  }, [])
+
 }
 
 export default userHooks
