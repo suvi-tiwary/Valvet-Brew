@@ -51,7 +51,7 @@ export const SignIn = async(req,res)=>{
             return res.status(400).send("all fields are required")
         }
 
-        const isMatch =  bcrypt.compare(password,user.password)
+        const isMatch = await bcrypt.compare(password,user.password)
         if(!isMatch){
             return res.status(400).send("incorrect password")
         }
@@ -60,6 +60,7 @@ export const SignIn = async(req,res)=>{
         res.cookie("token",token,{
             httpOnly:true,
             secure:false,
+            sameSite: "lax",
             maxAge:7*24*60*60*1000
         })
 
@@ -73,7 +74,7 @@ export const SignIn = async(req,res)=>{
 
 export const SignOut= async(req,res)=>{
     try {
-        res.cookie.clear("token")
+      res.clearCookie("token")
     } catch (error) {
         return res.status(500).send(`Signout error ${error}`)
     }
@@ -82,32 +83,32 @@ export const SignOut= async(req,res)=>{
 export const sendOtp= async(req,res)=>{
     try {
         let {email}=req.body
-        const user = await findOne({email})
+        const user = await User.findOne({email})
         if(!user){
             return res.status(400).send("user does not exist")
         }
         const otp = await Math.floor(100000+ Math.random()*900000).toString()
         user.otp=otp
-        user.otpExpires=Date.now+5*60*1000
+        user.otpExpires=Date.now()+5*60*1000
         
         await user.save()
         await sendMail(email,otp)
-        return res.satus(200).send("otp send successfully")
+        return res.status(200).send("otp send successfully")
     } catch (error) {
-        return res.satus(500).send(`send otp error ${error}`)
+        return res.status(500).send(`send otp error ${error}`)
     }
 }
 
 export const verifyOtp = async(req,res)=>{
     try {
           let {email,otp}=req.body
-        const user = await findOne({email})
-        if(user.otp!=otp || user.otpExpires<otp){
+        const user = await User.findOne({email})
+        if(user.otp!=otp || user.otpExpires<Date.now()){
             return res.status(400).send("Incorrect OTP")
         }
         user.verifyOtp=true
         await user.save()
-        return res.satus(200).send("otp is verified")
+        return res.status(200).send("otp is verified")
         
     } catch (error) {
         return res.status(500).send(`verify otp error ${error}`)
@@ -119,7 +120,7 @@ export const resetPassword = async(req,res)=>{
         let {email,newPassword}=req.body
         const user = await User.findOne({email})
         if(!user || !user.otpVerified){
-            return res.satus(400).send("otp verification required")
+            return res.status(400).send("otp verification required")
         }
 
         const hassedPassword = await bcrypt.hash(newPassword,10)
@@ -142,7 +143,7 @@ export const googleAuth = async(req,res)=>{
         let {fullname,email,role}=req.body
         let user = await User.findOne({email})
         if(!user){
-              user = User.create({
+              user =  await User.create({
                 fullname,email,role
              })
         }
@@ -151,6 +152,7 @@ export const googleAuth = async(req,res)=>{
            res.cookie("token",token,{
             httpOnly:true,
             secure:false,
+            sameSite: "lax",
             maxAge:7*24*60*60*1000
         })
 
